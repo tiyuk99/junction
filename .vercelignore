@@ -1,0 +1,6 @@
+.env
+.env.*
+.git/
+.butler-slide-build/
+output/*.mov
+output/*.mp4

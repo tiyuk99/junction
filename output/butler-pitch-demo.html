@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Butler · 45 second demo</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#f4f1e8;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}iframe{display:block;width:100%;height:100%;border:0;background:#f4f1e8}.caption{position:fixed;z-index:99;left:5.2vw;bottom:5.2vh;max-width:min(780px,78vw);padding:20px 26px 21px;border:1px solid rgba(225,238,205,.2);border-radius:14px;background:rgba(12,48,39,.94);color:#f8f6ee;box-shadow:0 20px 70px #0b2d2580;backdrop-filter:blur(14px);opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}.caption.on{opacity:1;transform:translateY(0)}.eyebrow{font-size:11px;letter-spacing:.19em;text-transform:uppercase;color:#c5e96b;font-weight:750;margin-bottom:8px}.line{font-family:Georgia,serif;font-size:clamp(22px,2.5vw,38px);line-height:1.12;letter-spacing:-.025em}.sub{font-size:clamp(13px,1.15vw,17px);color:#cad6cc;margin-top:8px;line-height:1.4}.progress{position:fixed;z-index:100;left:0;right:0;bottom:0;height:3px;background:#0a2e25}.progress i{display:block;height:100%;width:0;background:#d6ed67;transition:width .25s linear}.brand{display:none}.shade{position:fixed;inset:auto 0 0;height:25vh;z-index:98;pointer-events:none;background:linear-gradient(0deg,rgba(8,37,30,.62),transparent)}
+</style>
+</head>
+<body>
+<iframe id="product" src="/index.html#explore" title="Butler travel readiness app"></iframe>
+<div class="shade"></div><div class="brand">BUTLER<b>.</b> &nbsp;·&nbsp; TRAVEL APPLICATION AUTOPILOT</div>
+<div id="caption" class="caption"><div id="eyebrow" class="eyebrow"></div><div id="line" class="line"></div><div id="sub" class="sub"></div></div><div class="progress"><i id="bar"></i></div>
+<script>
+const frame=document.querySelector('#product'),cap=document.querySelector('#caption');let app;
+const scenes=[
+ {at:0,tag:'A tedious task, handled',line:'Know what it takes to go.',sub:'Butler turns scattered travel rules into a reviewable plan.'},
+ {at:5,tag:'01 · Your real context',line:'Passport + residence + purpose.',sub:'The same destination can mean a different route for every traveler.'},
+ {at:10,tag:'02 · Explore the globe',line:'Spin through possible destinations.',sub:'Each stop updates the route for the same traveler profile.'},
+ {at:18,tag:'03 · Evidence before advice',line:'Open the authority’s source.',sub:'See the references behind the route, then verify the official instructions.'},
+ {at:23,tag:'04 · Turn research into action',line:'A short, source-linked checklist.',sub:'Prepare the documents the Embassy actually asks for.'},
+ {at:30,tag:'05 · Start the application',line:'Use the real government PDF.',sub:'Japan’s official visa form, matched to a fictional traveler profile.'},
+ {at:37,tag:'06 · AI, with your review',line:'AI suggests. You approve.',sub:'Profile matches are editable; missing answers stay visible. Nothing is submitted.'},
+ {at:42,tag:'From search to next step',line:'Less digging. More done.',sub:'Butler prepares the application; the traveler remains in control.'}
+];
+function scene(n){const s=scenes[n];document.querySelector('#eyebrow').textContent=s.tag;document.querySelector('#line').textContent=s.line;document.querySelector('#sub').textContent=s.sub;cap.classList.add('on');}
+function closeDialogs(){for(const d of app.querySelectorAll('dialog[open]'))d.close();}
+function scrollTo(el){el?.scrollIntoView({behavior:'smooth',block:'start'});}
+function run(){if(!frame.contentDocument||!frame.contentDocument.querySelector('#worldGlobe'))return setTimeout(run,250);app=frame.contentDocument;const tick=(sec,fn)=>setTimeout(fn,sec*1000);
+scene(0);scrollTo(app.querySelector('#top'));
+tick(5,()=>{scene(1);scrollTo(app.querySelector('#journey'))});
+tick(10,()=>{scene(2);scrollTo(app.querySelector('.explorer-section'));setTimeout(()=>app.defaultView.updateDestination('South Korea',{animate:true}),500)});
+tick(12,()=>app.defaultView.updateDestination('Thailand',{animate:true}));
+tick(14,()=>app.defaultView.updateDestination('France',{animate:true}));
+tick(16,()=>app.defaultView.updateDestination('Japan',{animate:true}));
+tick(18,()=>{scene(3);app.querySelector('#sourcesButton')?.click()});
+tick(23,()=>{closeDialogs();scene(4);app.querySelector('#navDocuments')?.click();setTimeout(()=>scrollTo(app.querySelector('#page-documents')),200)});
+tick(30,()=>{scene(5);const b=app.querySelector('#openJapanDemo');scrollTo(app.querySelector('#page-documents'));setTimeout(()=>b?.click(),700)});
+tick(37,()=>{scene(6);setTimeout(()=>{const box=app.querySelector('#formAiConsent');scrollTo(box?.closest('.form-autofill-panel'));},300)});
+tick(42,()=>scene(7));
+}
+frame.addEventListener('load',()=>setTimeout(run,500));
+const started=performance.now();function animateProgress(now){const seconds=(now-started)/1000;document.querySelector('#bar').style.width=Math.min(100,seconds/45*100)+'%';if(seconds<45)requestAnimationFrame(animateProgress)}requestAnimationFrame(animateProgress);
+</script>
+</body></html>

@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+node_modules/
+__pycache__/
+.butler-slide-build/
+persisted_settings.json
+output/*.mov
+output/*.mp4
+.DS_Store
